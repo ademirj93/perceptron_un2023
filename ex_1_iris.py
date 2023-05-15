@@ -5,12 +5,12 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import confusion_matrix
 
-# Carregando o dataset wine
+# Carregando o dataset
 data = load_iris()
 X = data.data
 y = data.target
 
-# Pré-processamento dos dados
+# Pré-processamento dos dados atravéz do zscore
 scaler = StandardScaler()
 X = scaler.fit_transform(X)
 
@@ -24,14 +24,17 @@ def sigmoid(x):
 
 # Classe do perceptron
 class Perceptron:
-    def __init__(self, lr=0.5, epochs=500):
+    def __init__(self, lr=0.01, epochs=1000):
         self.lr = lr
         self.epochs = epochs
     
     #Treinamento da rede    
     def fit(self, X, y,X_val=None, y_val=None):
+        # Inicializa os pesos com um array de zeros
         self.weights = np.zeros(X.shape[1])
+        # Inicializa o bias com 0
         self.bias = 0
+        # inicia as variaveis de validação
         self.X_val = X_val
         self.y_val = y_val
 
@@ -62,7 +65,7 @@ class Perceptron:
         return errors, val_errors
 
           
-
+    # Função para predição dos resultados
     def predict(self, X):
         y_pred = sigmoid(np.dot(X, self.weights) + self.bias)
         return np.round(y_pred)
@@ -89,12 +92,8 @@ ax1.set_xlabel('Épocas')
 ax1.set_ylabel('Erro')
 ax2.scatter(X_train[:,0], X_train[:,2], c=y_train)
 ax2.set_title('Treinamento')
-ax2.set_xlabel('Característica 1')
-ax2.set_ylabel('Característica 2')
 ax3.scatter(X_test[:,0], X_test[:,2], c=y_test)
-ax3.set_title('Teste')
-ax3.set_xlabel('Característica 1')
-ax3.set_ylabel('Característica 2')
+ax3.set_title('Predição')
 ax4.plot(val_errors)
 ax4.set_title('Erro Quadrático de validação')
 ax4.set_xlabel('Épocas')
@@ -107,7 +106,7 @@ print('Acurácia (Treinamento):', accuracy_train)
 print('Acurácia (Teste):', accuracy_test)
 
 #Matriz de Confusão
-cmteste = confusion_matrix(y_test, y_pred_test, labels=range(len(data.target_names)))
+cmteste = confusion_matrix(y_test, y_pred_test)
 
 # Extrair os valores da matriz de confusão
 tn = cmteste[0, 0]   # Verdadeiros Negativos (classe 0)

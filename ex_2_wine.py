@@ -5,7 +5,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import confusion_matrix
 
-# Carregando o dataset wine
+# Carregando o dataset
 data = load_wine()
 X = data.data
 y = data.target
@@ -24,7 +24,7 @@ def sigmoid(x):
 
 # Classe do perceptron
 class Perceptron:
-    def __init__(self, lr=0.01, epochs=100):
+    def __init__(self, lr=0.1, epochs=500):
         self.lr = lr
         self.epochs = epochs
     
@@ -68,7 +68,7 @@ class Perceptron:
         return np.round(y_pred)
     
 # Instanciando o perceptron
-perceptron = Perceptron(lr=0.1, epochs=100)
+perceptron = Perceptron(lr=0.5, epochs=1000)
 
 # Treinando o perceptron
 errors, val_errors = perceptron.fit(X_train, y_train, X_val, y_val)
@@ -89,12 +89,8 @@ ax1.set_xlabel('Épocas')
 ax1.set_ylabel('Erro')
 ax2.scatter(X_train[:,0], X_train[:,2], c=y_train)
 ax2.set_title('Treinamento')
-ax2.set_xlabel('Característica 1')
-ax2.set_ylabel('Característica 2')
 ax3.scatter(X_test[:,0], X_test[:,2], c=y_test)
 ax3.set_title('Teste')
-ax3.set_xlabel('Característica 1')
-ax3.set_ylabel('Característica 2')
 ax4.plot(val_errors)
 ax4.set_title('Erro Quadrático de validação')
 ax4.set_xlabel('Épocas')
