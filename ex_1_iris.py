@@ -67,7 +67,7 @@ class Perceptron:
         y_pred = sigmoid(np.dot(X, self.weights) + self.bias)
         return np.round(y_pred)
     
-# Instanciando o perceptron
+# Instanciando o perceptron (lr = Taxa de aprendizado e Epochs = Iterações )
 perceptron = Perceptron(lr=0.1, epochs=100)
 
 # Treinando o perceptron
