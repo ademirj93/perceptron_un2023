@@ -87,11 +87,11 @@ ax1.plot(errors)
 ax1.set_title('Erro Quadrático de treinamento')
 ax1.set_xlabel('Épocas')
 ax1.set_ylabel('Erro')
-ax2.scatter(X_train[:,0], X_train[:,1], c=y_train)
+ax2.scatter(X_train[:,0], X_train[:,2], c=y_train)
 ax2.set_title('Treinamento')
 ax2.set_xlabel('Característica 1')
 ax2.set_ylabel('Característica 2')
-ax3.scatter(X_test[:,0], X_test[:,1], c=y_test)
+ax3.scatter(X_test[:,0], X_test[:,2], c=y_test)
 ax3.set_title('Teste')
 ax3.set_xlabel('Característica 1')
 ax3.set_ylabel('Característica 2')
@@ -107,13 +107,13 @@ print('Acurácia (Treinamento):', accuracy_train)
 print('Acurácia (Teste):', accuracy_test)
 
 #Matriz de Confusão
-cmteste = confusion_matrix(y_test, y_pred_test)
+cmteste = confusion_matrix(y_test, y_pred_test, labels=range(len(data.target_names)))
 
 # Extrair os valores da matriz de confusão
-tn = cmteste[0,0]
-fp = cmteste[0,1]
-fn = cmteste[1,0]
-tp = cmteste[1,1]
+tn = cmteste[0, 0]   # Verdadeiros Negativos (classe 0)
+fp = cmteste[0, 1] + cmteste[1, 0] + cmteste[1, 2] # Falsos Positivos (classe 1)
+fn = cmteste[0, 2] + cmteste[2, 0]  + cmteste[2, 1] # Falsos Negativos (classe 2)
+tp = cmteste[1, 1] + cmteste[2, 2] # Verdadeiros Positivos (classe 1 e 2)
 
 # Imprimir os valores
 print("Matriz de Confusão de teste x Validação:")
@@ -130,7 +130,16 @@ plt.xlabel('Predição')
 plt.ylabel('Real')
 plt.xticks(np.arange(len(data.target_names)), data.target_names)
 plt.yticks(np.arange(len(data.target_names)), data.target_names)
-for i in range(len(data.target_names)):
-    for j in range(len(data.target_names)):
-        plt.text(j, i, cmteste[i, j], ha='center', va='center')
+
+# Plotagem das dimensões da matriz de confusão
+plt.text(0, 0, cmteste[0, 0], ha='center', va='center') 
+plt.text(0, 1, cmteste[0, 1], ha='center', va='center')
+plt.text(0, 2, cmteste[0, 2], ha='center', va='center')  
+plt.text(1, 1, cmteste[1, 1], ha='center', va='center') 
+plt.text(1, 0, cmteste[1, 0], ha='center', va='center')
+plt.text(1, 2, cmteste[1, 2], ha='center', va='center')  
+plt.text(2, 2, cmteste[2, 2], ha='center', va='center') 
+plt.text(2, 0, cmteste[2, 0], ha='center', va='center')
+plt.text(2, 1, cmteste[2, 1], ha='center', va='center')
+
 plt.show()
